@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        FloatingActionButton send = (FloatingActionButton)findViewById(R.id.send);
 
-        fab.setOnClickListener(new View.OnClickListener()
+        send.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity
                                         .getDisplayName())
                         );
 
+                /*
                 Toast.makeText(MainActivity.this, "Posted msg as: " +
                         FirebaseAuth.getInstance()
                                 .getCurrentUser()
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity
                                     .getCurrentUser()
                                     .getEmail()
                         , Toast.LENGTH_LONG).show();
-
+*/
                 // Clear the input
                 input.setText("");
             }
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity
                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(user.getDisplayName()).build();
                 user.updateProfile(profileUpdates);
-                
+
                 displayChatMessages();
             }
             else
