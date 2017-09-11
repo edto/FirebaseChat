@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
@@ -28,7 +30,17 @@ public class MainActivity extends AppCompatActivity
     private static final int SIGN_IN_REQUEST_CODE = 10;
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseListAdapter<ChatMessage> adapter;
+    private FirebaseAuth mAuth;
 
+/*
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,6 +49,7 @@ public class MainActivity extends AppCompatActivity
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mAuth = FirebaseAuth.getInstance();
 
         // No user logged in
         if(FirebaseAuth.getInstance().getCurrentUser() == null)
@@ -137,6 +150,14 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this,
                         "Successfully signed in.", Toast.LENGTH_LONG).show();
 
+                // upon successful login get user instance
+                FirebaseUser user = mAuth.getCurrentUser();
+
+                // apply profile change using display name.
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(user.getDisplayName()).build();
+                user.updateProfile(profileUpdates);
+                
                 displayChatMessages();
             }
             else
