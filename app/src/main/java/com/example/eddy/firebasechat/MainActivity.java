@@ -72,7 +72,8 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this,"Welcome " + FirebaseAuth.getInstance().getCurrentUser()
                             .getDisplayName(), Toast.LENGTH_LONG).show();
 
-            displayAllChatMessages();
+            displayPMMessages();
+            //displayAllChatMessages();
         }
 
 
@@ -199,7 +200,8 @@ public class MainActivity extends AppCompatActivity
                         .setDisplayName(user.getDisplayName()).build();
                 user.updateProfile(profileUpdates);
 
-                displayAllChatMessages();
+                displayPMMessages();
+                //displayAllChatMessages();
             }
             else
             {
