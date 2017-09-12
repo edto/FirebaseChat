@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this,"Welcome " + FirebaseAuth.getInstance().getCurrentUser()
                             .getDisplayName(), Toast.LENGTH_LONG).show();
 
-            displayPMMessages();
-            //displayAllChatMessages();
+            //displayPMMessages();
+            displayAllChatMessages();
         }
 
 
@@ -98,7 +98,13 @@ public class MainActivity extends AppCompatActivity
                                         .getDisplayName())
                         );
 
-                /*
+                if (FirebaseAuth.getInstance().getCurrentUser().getDisplayName() == null)
+                {
+                    Toast.makeText(MainActivity.this, "Username is null", Toast.LENGTH_LONG).show();
+                }
+
+                else
+                {
                 Toast.makeText(MainActivity.this, "Posted msg as: " +
                         FirebaseAuth.getInstance()
                                 .getCurrentUser()
@@ -108,7 +114,7 @@ public class MainActivity extends AppCompatActivity
                                     .getCurrentUser()
                                     .getEmail()
                         , Toast.LENGTH_LONG).show();
-*/
+                }
                 // Clear the input
                 input.setText("");
             }
@@ -189,19 +195,23 @@ public class MainActivity extends AppCompatActivity
         {
             if(resultCode == RESULT_OK)
             {
-                Toast.makeText(this,
-                        "Successfully signed in.", Toast.LENGTH_LONG).show();
-
                 // upon successful login get user instance
                 FirebaseUser user = mAuth.getCurrentUser();
 
+                Toast.makeText(this,
+                        "Successfully signed in as " + user.getDisplayName(),
+                        Toast.LENGTH_LONG).show();
+
+
+
                 // apply profile change using display name.
-                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+               UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                         .setDisplayName(user.getDisplayName()).build();
+
                 user.updateProfile(profileUpdates);
 
-                displayPMMessages();
-                //displayAllChatMessages();
+                //displayPMMessages();
+                displayAllChatMessages();
             }
             else
             {
