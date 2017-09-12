@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
 {
 
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAnalytics mFirebaseAnalytics;
     private FirebaseListAdapter<ChatMessage> adapter;
     private FirebaseAuth mAuth;
+
+    private ArrayList<String> friends;
 
 /*
     @Override
@@ -51,6 +55,9 @@ public class MainActivity extends AppCompatActivity
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         mAuth = FirebaseAuth.getInstance();
 
+        friends = new ArrayList<>();
+        friends.add("friendname");
+
         // No user logged in
         if(FirebaseAuth.getInstance().getCurrentUser() == null)
         {
@@ -64,7 +71,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this,"Welcome " + FirebaseAuth.getInstance().getCurrentUser()
                             .getDisplayName(), Toast.LENGTH_LONG).show();
 
-            displayChatMessages();
+            displayAllChatMessages();
         }
 
 
@@ -113,12 +120,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void displayChatMessages()
+    private void displayAllChatMessages()
     {
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
         adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
+                R.layout.message, FirebaseDatabase.getInstance().getReference())
+        {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 // Get references to the views of message.xml
@@ -159,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                         .setDisplayName(user.getDisplayName()).build();
                 user.updateProfile(profileUpdates);
 
-                displayChatMessages();
+                displayAllChatMessages();
             }
             else
             {
