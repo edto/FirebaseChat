@@ -37,15 +37,23 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<String> friends;
 
-/*
+
     @Override
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+
+        if (currentUser != null)
+        {
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(currentUser.getDisplayName()).build();
+
+            currentUser.updateProfile(profileUpdates);
+        }
+
     }
-*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
